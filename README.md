@@ -1,58 +1,159 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Warehouse Backend
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Workspace Backend untuk project tim Warehouse. Repository ini disiapkan agar bisa di instalasi dari branch GitHub lain dalam ekositem repository ini, lalu dijalankan di lokal oleh seluruh anggota tim dengan konfigurasi yang sama.
 
-## About Laravel
+Namun, bagian lainnya (Laravel setup, PHP, Composer, artisan commands) perlu disesuaikan juga. Beri tahu preferensi Anda.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Ringkasan
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Framework: Laravel 13
+- Auth API: Laravel Sanctum
+- RBAC: berbasis role dan permission di tabel users
+- Fokus awal database: autentikasi login password dan kontrol akses role
 
-## Learning Laravel
+## Kebutuhan Sistem
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- PHP 8.3 atau lebih baru
+- Composer
+- Node.js dan npm
+- Database MySQL / MariaDB / PostgreSQL / SQLite
+- Git
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Struktur Auth dan RBAC
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+Project ini menggunakan tabel users sebagai pusat autentikasi dan kontrol akses.
 
-## Agentic Development
+Role yang tersedia:
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+- super_admin
+- admin
+- finance
+- project_manager
+
+Kolom penting pada users:
+
+- name
+- email
+- password
+- role
+- is_active
+
+Catatan:
+
+- Login menggunakan endpoint API dan token Sanctum
+- Akses fitur dibatasi dengan permission sesuai role
+- Jika ingin database awal hanya berisi data autentikasi, cukup jalankan migrasi users dan tabel bawaan Laravel/Sanctum, lalu isi user admin seperlunya
+
+## Cara Clone dari Repository GitHub
+
+1. Clone repository:
+
+	```bash
+	git clone https://github.com/<username>/<nama-repo>.git
+	cd <nama-repo>
+	```
+
+2. Install dependency backend:
+
+	```bash
+	composer install
+	```
+
+3. Install dependency frontend:
+
+	```bash
+	npm install
+	```
+
+4. Salin file environment:
+
+	```bash
+	copy .env.example .env
+	```
+
+5. Atur koneksi database di file .env:
+
+	- DB_CONNECTION
+	- DB_HOST
+	- DB_PORT
+	- DB_DATABASE
+	- DB_USERNAME
+	- DB_PASSWORD
+
+6. Generate application key:
+
+	```bash
+	php artisan key:generate
+	```
+
+## Migrasi Database
+
+Untuk setup awal project tim, jalankan migrasi:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+php artisan migrate
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Jika ingin sekalian mengisi user default untuk demo atau testing role, jalankan:
 
-## Contributing
+```bash
+php artisan migrate --seed
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Seeder bawaan akan membuat akun contoh berikut:
 
-## Code of Conduct
+| Role | Email | Password |
+| --- | --- | --- |
+| super_admin | superadmin@warehouse.test | **** |
+| admin | admin@warehouse.test | **** |
+| finance | finance@warehouse.test | **** |
+| project_manager | pm@warehouse.test | **** |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Menjalankan Backend
 
-## Security Vulnerabilities
+Jalankan server Laravel:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+php artisan serve
+```
+
+Jika ingin menjalankan backend dan frontend sekaligus dalam mode development:
+
+```bash
+npm run dev
+```
+
+Atau gunakan script bawaan Laravel:
+
+```bash
+composer run dev
+```
+
+## Endpoint Auth Utama
+
+- POST /api/login
+- POST /api/logout
+- GET /api/me
+
+## Alur Setup Cepat untuk Tim
+
+1. Clone repository
+2. Jalankan composer install
+3. Jalankan npm install
+4. Copy .env.example ke .env
+5. Isi konfigurasi database
+6. Jalankan php artisan key:generate
+7. Jalankan php artisan migrate atau php artisan migrate --seed
+8. Jalankan php artisan serve
+
+## Catatan Pengembangan Tim
+
+- Pastikan file .env tidak di-commit ke repository
+- Setiap anggota tim cukup clone repository lalu mengikuti langkah setup di atas
+- Untuk data awal yang bersih, gunakan migrate tanpa seed
+- Untuk akun demo RBAC, gunakan migrate --seed
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Proyek ini menggunakan lisensi MIT.
