@@ -16,11 +16,6 @@ Complete Role-Based Access Control (RBAC) implementation for the warehouse manag
 - Full reports access
 - All assignments management
 
-**Permission Constants**:
-- `dashboard.view`, `items.view`, `items.manage`, `invoices.view`, `invoices.create`, `invoices.update`, `invoices.send`
-- `categories.manage`, `suppliers.manage`, `reports.view`, `accounts.manage`
-- `projects.view`, `projects.manage`, `surveys.view`, `surveys.manage`, `assignments.manage`
-
 ---
 
 ### 2. Admin / Manajer Gudang
@@ -31,15 +26,6 @@ Complete Role-Based Access Control (RBAC) implementation for the warehouse manag
 - Read-only invoices & projects
 - Reports viewing
 
-**Assigned Permissions**:
-```php
-[
-    'dashboard.view',
-    'items.view', 'items.manage',
-    'categories.manage', 'suppliers.manage',
-    'reports.view'
-]
-```
 
 ---
 
@@ -53,16 +39,6 @@ Complete Role-Based Access Control (RBAC) implementation for the warehouse manag
 - Financial reports
 - Read-only projects & surveys
 
-**Assigned Permissions**:
-```php
-[
-    'dashboard.view',
-    'items.view',
-    'invoices.view', 'invoices.create', 'invoices.update', 'invoices.send',
-    'reports.view'
-]
-```
-
 ---
 
 ### 4. Project Manager / Proyek
@@ -74,19 +50,6 @@ Complete Role-Based Access Control (RBAC) implementation for the warehouse manag
 - Full survey management (create, update, delete)
 - Assignment management
 - Reports viewing
-
-**Assigned Permissions**:
-```php
-[
-    'dashboard.view',
-    'items.view',
-    'invoices.view',
-    'projects.view', 'projects.manage',
-    'surveys.view', 'surveys.manage',
-    'assignments.manage',
-    'reports.view'
-]
-```
 
 ---
 
@@ -154,10 +117,10 @@ Request → auth:sanctum → permission:X.Y → Controller → Policy (optional)
 
 ### Test Credentials (Seeded)
 ```
-Super Admin:  superadmin@warehouse.test / password123
-Admin:        admin@warehouse.test / password123
-Finance:      finance@warehouse.test / password123
-Project Mgr:  pm@warehouse.test / password123
+Super Admin:  superadmin@warehouse.test / ****
+Admin:        admin@warehouse.test / ****
+Finance:      finance@warehouse.test / ****
+Project Mgr:  pm@warehouse.test / ****
 ```
 
 ### Sample Data Seeded
@@ -242,6 +205,3 @@ php artisan route:clear
 ✅ Routes properly registered (22 endpoints)
 
 ---
-
-**Implementation Date**: 2026-04-24
-**Status**: Complete - Ready for Frontend Integration
